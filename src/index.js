@@ -7,16 +7,14 @@ const cardLikeBttn = document.querySelector('#like-button');
 const cardComments = document.querySelector('#comments-list');
 const cardCommentForm = document.querySelector('#comment-form');
 
-
 fetch(flatagramAPI)
     .then(response => response.json())
     .then(renderCardInformation)
     .catch(console.error);
 
-
 function renderCardInformation(cardInformation) {
     let likesCount = cardInformation.likes;
-    let imageVisibility = true;
+    let imageVisibility = false;
 
     cardTitle.textContent = cardInformation.title;
     cardTitle.addEventListener('click', () => imageVisibility = toggleImageVisibility(imageVisibility));
@@ -25,12 +23,10 @@ function renderCardInformation(cardInformation) {
     cardImage.addEventListener('click', renderRandomDogImage);
 
     displayLikes(likesCount);
+    cardLikeBttn.addEventListener('click', () => displayLikes(++likesCount));
 
     clearComments();
-
     cardInformation.comments.forEach(comment => renderComment(comment));
-
-    cardLikeBttn.addEventListener('click', () => displayLikes(++likesCount));
     cardCommentForm.addEventListener('submit', (e) => addNewComment(e, cardInformation.id));
 }
 
